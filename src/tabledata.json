@@ -1,0 +1,63 @@
+const defaultData: Recommendation[] = [
+  {
+    initials: "AW",
+    name: "Andre Wu",
+    color: "bg-[#D3F2E6]",
+    tag: "Plumber",
+    phone: "+1 123-456-7890",
+    recommendedBy: [
+      { initials: "JD", color: "bg-[#FDDDE1]" },
+      { initials: "DA", color: "bg-[#F9EFB0]" },
+    ],
+    notesCount: 2,
+  },
+  {
+    initials: "AW",
+    name: "Andy Wogel",
+    color: "bg-[#E7E4FB]",
+    tag: "Doctor",
+    phone: "+1 123-456-7890",
+    recommendedBy: [
+      { initials: "AW", color: "bg-[#D3F2E6]" },
+      { initials: "JD", color: "bg-[#FDDDE1]" },
+    ],
+    notesCount: 1,
+  },
+  {
+    initials: "DA",
+    name: "Dave Arron",
+    color: "bg-[#FFE7D6]",
+    tag: "Tutor",
+    phone: "+1 123-456-7890",
+    recommendedBy: [
+      { initials: "AW", color: "bg-[#E7E4FB]" },
+      { initials: "DA", color: "bg-[#F9EFB0]" },
+    ],
+    notesCount: 3,
+  },
+  {
+    initials: "JD",
+    name: "Johnathan Doe",
+    color: "bg-[#FDDDE1]",
+    tag: "Barber",
+    phone: "+1 321-654-0987",
+    recommendedBy: [
+      { initials: "AW", color: "bg-[#D3F2E6]" },
+      { initials: "DA", color: "bg-[#FFE7D6]" },
+      { initials: "MJ", color: "bg-[#E7E4FB]" },
+    ],
+    notesCount: 4,
+  },
+  {
+    initials: "MS",
+    name: "Mark Shaw",
+    color: "bg-[#E6F7E6]",
+    tag: "Electrician",
+    phone: "+1 987-654-3210",
+    recommendedBy: [
+      { initials: "JD", color: "bg-[#FDDDE1]" },
+      { initials: "AW", color: "bg-[#D3F2E6]" },
+    ],
+    notesCount: 5,
+  },
+]
