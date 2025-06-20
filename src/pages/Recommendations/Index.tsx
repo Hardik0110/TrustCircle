@@ -1,37 +1,11 @@
 import RecommendationSteps from "@/components/RecommendationSteps";
+import { SearchBar } from "@/components/SearchBar";
 import RecommendationTable from "@/components/Table";
 import { Card } from "@/components/ui/card";
-import { AddSquare, Lock1, SearchNormal1, UserTick } from "iconsax-reactjs";
-import { type ChangeEvent, useState } from "react";
+import { AddSquare, Lock1, UserTick } from "iconsax-reactjs";
+import { useState } from "react";
 
-interface SearchBarProps {
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-}
-
-const SearchBar: React.FC<SearchBarProps> = ({ 
-  value, 
-  onChange, 
-  placeholder = "Search by name, category or contact number" 
-}) => (
-  <div className="relative w-full max-w-[420px] h-10">
-    <SearchNormal1
-      className="absolute left-3 top-1/2 transform -translate-y-1/2"
-      size="20"
-      color="#1C6C41"
-    />
-    <input
-      type="text"
-      value={value}
-      onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
-      placeholder={placeholder}
-      className="w-full h-full pl-12 pr-4 bg-white rounded-md text-sm outline-none border border-gray-300 focus:border-[#1C6C41] focus:ring-1 focus:ring-[#1C6C41] transition-all duration-200"
-    />
-  </div>
-);
-
-const MainPage: React.FC = () => {
+const Index: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
 
   const handleSearchChange = (value: string): void => {
@@ -60,13 +34,16 @@ const MainPage: React.FC = () => {
           </div>
 
           {/* Table */}
-          <RecommendationTable
-            showCategory
-            showPhone
-            showRecommendedBy
-            showNotes
+            <RecommendationTable
+            showCategory={true}
+            showPhone={true}
+            showRecommendedBy={true}
+            showNotes={true}
+            showEmail={false}
+            showConnectedOn={false}
+            showRecommends={false}
             className="w-full"
-          />
+            />
 
         <Card className="w-full h-[250px] rounded-[20px] p-4 bg-[#F0EAE5] shadow-md flex items-start justify-between gap-4">
           <RecommendationSteps />
@@ -104,8 +81,8 @@ const MainPage: React.FC = () => {
         <div className="flex flex-col items-center justify-center gap-4">
           {/* Heading */}
           <div className="flex items-center gap-2 justify-center">
-            <UserTick className="h-8 w-8" color="#1C6C41" />
-            <span className="font-bold text-xl text-center">Trusted Recommendation</span>
+            <UserTick className="w-10 h-10" color="#1C6C41"/>
+              <span className="font-bold text-2xl">Trusted Recommendation</span>
           </div>
 
           {/* Search Bar */}
@@ -117,15 +94,23 @@ const MainPage: React.FC = () => {
 
         {/* Table (cards on mobile) */}
         <RecommendationTable
-          showCategory
-          showPhone
-          showRecommendedBy
-          showNotes
+          showCategory={true}
+          showPhone={true}
+          showRecommendedBy={true}
+          showNotes={true}
+          showEmail={false}
+          showConnectedOn={false}
+          showRecommends={false}
           className="w-full "
         />
+
+        {/* Recommendation Steps Section */}
+        <div className="  rounded-[20px] bg-[#F0EAE5] h-[570px] p-6">
+          <RecommendationSteps />
+        </div>
       </div>
     </div>
   );
 };
 
-export default MainPage;
+export default Index;

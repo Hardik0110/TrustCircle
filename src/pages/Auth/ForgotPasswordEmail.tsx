@@ -29,7 +29,7 @@ const ForgotPasswordEmail = () => {
         {/* Table */}
         <div className="p-6 mt-[-20px]">
           <div className="w-[536px] h-[320px] rounded-md overflow-hidden  mt-3">
-            <RecommendationTable  showCategory={true} showPhone={true} showRecommendedBy={false} showNotes={false}/>
+            <RecommendationTable  showCategory={true} showPhone={true} showRecommendedBy={false} showNotes={false} showRecommends={false} showEmail={false} showConnectedOn={false}/>
           </div>
 
           {/* CTA and OTP */}

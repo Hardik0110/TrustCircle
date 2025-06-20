@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import MainLayout from "./Layout/MainLayout"
-import AuthLayout from "./Layout/AuthLayout"
-import MainPage from "./pages/Recommendations/MainPage"
+import MainLayout from "./layout/MainLayout"
+import AuthLayout from "./layout/AuthLayout"
+import Index from "./pages/Recommendations/Index"
+import MyCircle from "./pages/MyCircle/Index"
 import ForgotPasswordEmail from "./pages/Auth/ForgotPasswordEmail"
 import OtpVerification from "./pages/Auth/OtpVerification"
+import Requests from "./pages/Requests/Index"
 
 function App() {
   return (
@@ -11,7 +13,9 @@ function App() {
       <Routes>
         {/* Routes with main layout */}
         <Route element={<MainLayout />}>
-          <Route path="/recommendations" element={<MainPage />} />
+          <Route path="/recommendations" element={<Index />} />
+          <Route path="/mycircle" element={<MyCircle />} />
+          <Route path="/requests" element={<Requests />} />
         </Route>
 
         {/* Routes with auth layout */}
