@@ -88,9 +88,10 @@ const MyCircle = () => {
           showPhone={false}
           showRecommendedBy={false}
           showNotes={false}
-          showEmail={true}
-          showConnectedOn={true}
+          showEmail={false}
+          showConnectedOn={false}
           showRecommends={true}
+          showSeparatorLine={false}
           className="w-full "
         />
 

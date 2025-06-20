@@ -97,10 +97,12 @@ const Index: React.FC = () => {
           showCategory={true}
           showPhone={true}
           showRecommendedBy={true}
-          showNotes={true}
+          showNotes={false}
           showEmail={false}
           showConnectedOn={false}
           showRecommends={false}
+          showSeparatorLine={true}
+          
           className="w-full "
         />
 
