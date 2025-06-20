@@ -13,17 +13,17 @@ const Index: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto md:px-4 md:py-6">
+    <div className="w-full max-w-[1440px] mx-auto md:px-8 md:py-8 ">
       {/* Desktop Layout */}
       <div className="hidden md:flex gap-6">
         {/* Main Content Section - 1000px */}
-        <div className="w-[1000px] flex flex-col gap-6">
+        <div className="w-[1000px] flex flex-col gap-8">
           {/* Header Section */}
           <div className="flex items-center justify-between">
             {/* Left: Heading */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4 p-3">
               <UserTick className="h-8 w-8" color="#1C6C41" />
-              <span className="font-bold text-2xl">Trusted Recommendation</span>
+              <span className="font-bold text-2xl ">Trusted Recommendation</span>
             </div>
 
             {/* Right: Search Bar */}
@@ -51,7 +51,7 @@ const Index: React.FC = () => {
         </div>
 
         {/* Right Section - 440px (Future Content) */}
-        <div className="w-[440px] rounded-lg min-h-[400px] flex flex-col gap-[8px]  text-gray-400 mt-16">
+        <div className="w-[440px] rounded-lg min-h-[400px] flex flex-col gap-[8px]  text-gray-400 mt-22">
           <div className="relative w-[306px] h-[174px]">
             <img
               src="src/assets/recommendationimage.png"

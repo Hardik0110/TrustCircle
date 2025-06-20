@@ -53,7 +53,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isExpanded, isCompleted, onCl
     (isExpanded || isCompleted) ? "text-md font-bold mb-4" : "text-md mb-4 text-[#A5A5A5]";
 
   const getCardWidth = (): string => 
-    isExpanded ? "w-[340px] md:w-[340px]" : "w-[280px] md:w-[168px]";
+    isExpanded ? "w-[340px] md:w-[360px]" : "w-[280px] md:w-[188px]";
 
   const renderStepContent = (): React.ReactNode => {
     if (!isExpanded) return null;
@@ -184,7 +184,7 @@ const RecommendationSteps: React.FC = () => {
   const isStepCompleted = (stepId: number): boolean => stepId < expandedStep;
 
   return (
-    <div className="flex flex-col md:flex-row md:items-start md:gap-6">
+    <div className="flex flex-col md:flex-row md:items-start md:gap-8">
       <Header />
       
       <div className="flex gap-4 md:flex-1 overflow-x-auto md:overflow-visible px-4 md:px-0 pb-4 md:pb-0">

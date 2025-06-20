@@ -17,7 +17,7 @@ interface RecommendationTableProps extends ColumnVisibility {
   className?: string;
 }
 
-const categories = ["Plumber", "Electrician", "Tutor", "Handymen"];
+const categories = [...new Set(recommendationData.flatMap(item => item.tags))];
 
 const RecommendationTable: React.FC<RecommendationTableProps> = ({
   data = recommendationData,
@@ -33,11 +33,15 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
   const [openRowPopup, setOpenRowPopup] = useState<number | null>(null);
   const popupRef = useRef<HTMLDivElement>(null);
+  const rowPopupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
         setShowCatPopup(false);
+      }
+      if (rowPopupRef.current && !rowPopupRef.current.contains(e.target as Node)) {
+        setOpenRowPopup(null);
       }
     };
     document.addEventListener("mousedown", onClick);
@@ -65,22 +69,8 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
       {/* DESKTOP */}
       <div className="hidden md:block rounded-[20px] overflow-hidden scrollbar-none border-2 border-white">
         {/* header */}
-        <div
-          className="bg-[#F8F5F0] px-4 py-2 grid gap-4 items-center text-sm font-medium text-gray-600"
-          style={{
-            gridTemplateColumns: `
-              2fr
-              ${showCategory ? "1fr" : ""}
-              ${showPhone ? "1.5fr" : ""}
-              ${showEmail ? "2fr" : ""}
-              ${showConnectedOn ? "1fr" : ""}
-              ${showRecommends ? "1fr" : ""}
-              ${showRecommendedBy ? "1.5fr" : ""}
-              ${showNotes ? "0.5fr" : ""}
-            `,
-          }}
-        >
-          <div className="flex items-center gap-2">
+        <div className="bg-[#F8F5F0] px-4 py-2 flex gap-4 items-center text-sm font-medium text-gray-600">
+          <div className="w-[270px] flex items-center gap-1">
             <span
               className="flex items-center gap-1 cursor-pointer"
               onClick={() => setSortAsc(!sortAsc)}
@@ -98,7 +88,7 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
           </div>
 
           {showCategory && (
-            <div className="relative" ref={popupRef}>
+            <div className="w-[245px] relative" ref={popupRef}>
               <span className="flex items-center gap-1">
                 Category
                 <Sort
@@ -133,17 +123,17 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
               )}
             </div>
           )}
-          {showPhone && <span>Contact number</span>}
-          {showEmail && <span>Email</span>}
-          {showConnectedOn && <span>Connected on</span>}
-          {showRecommends && <span className="flex justify-end">Recommends</span>}
+          {showPhone && <span className="w-[200px]">Contact number</span>}
+          {showEmail && <span className="w-[287px]">Email</span>}
+          {showConnectedOn && <span className="w-[215px]">Connected on</span>}
+          {showRecommends && <span className="w-[160px]">Recommends</span>}
           {showRecommendedBy && (
-            <span className="flex items-center gap-1">
+            <span className="w-[180px] flex items-center gap-1">
               Recommended by
               <Sort size={15} color="grey" className="cursor-pointer" />
             </span>
           )}
-          {showNotes && <span className="text-right">Notes</span>}
+          {showNotes && <span className="w-[94px] text-right">Notes</span>}
         </div>
 
         {/* rows */}
@@ -153,24 +143,12 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
             return (
               <div
                 key={i}
-                className={`group grid gap-4 items-center px-4 py-3 bg-white hover:bg-[#F8F5F0] transition-colors ${
+                className={`group flex gap-4 items-center px-4 py-3 bg-white hover:bg-[#F8F5F0] transition-colors ${
                   i < filtered.length - 1 ? "border-b border-gray-200" : ""
                 }`}
-                style={{
-                  gridTemplateColumns: `
-                    2fr
-                    ${showCategory ? "1fr" : ""}
-                    ${showPhone ? "1.5fr" : ""}
-                    ${showEmail ? "2fr" : ""}
-                    ${showConnectedOn ? "1fr" : ""}
-                    ${showRecommends ? "1fr" : ""}
-                    ${showRecommendedBy ? "1.5fr" : ""}
-                    ${showNotes ? "0.5fr" : ""}
-                  `,
-                }}
               >
                 {/* Name */}
-                <div className="flex items-center gap-2">
+                <div className="w-[270px] flex items-center gap-2">
                   <div
                     className={`w-8 h-8 rounded-full ${row.color} flex items-center justify-center text-xs font-semibold`}
                   >
@@ -181,7 +159,7 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
 
                 {/* Category multi-tag */}
                 {showCategory && (
-                  <div className="relative">
+                  <div className="w-[245px] relative">
                     <div className="flex items-center gap-2">
                       {tags.slice(0, 2).map((t) => (
                         <span
@@ -203,8 +181,8 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
                       )}
                     </div>
                     {openRowPopup === i && (
-                  <div className="absolute top-full mt-2 left-0 bg-white p-2 shadow- rounded-md z-10 w-[200px]">
-                    <p className="mb-2 text-sm font-bold">All Categories</p>
+                  <div ref={rowPopupRef} className="absolute top-full mt-2 left-0 bg-white p-2 shadow-lg rounded-md z-10 w-[200px] border-2 border-white">
+                    <p className="mb-2 text-sm font-bold">All Categories - {row.name}</p>
                     <div className="grid grid-cols-2 gap-2">
                       {tags.slice(2).map((t) => (
                         <button
@@ -225,21 +203,21 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
                 )}
 
                 {showPhone && (
-                  <div className="flex items-center gap-1 text-gray-700">
+                  <div className="w-[200px] flex items-center gap-1 text-gray-700">
                     <Call size="16" color="#6B7280" />
                     <span>{row.phone}</span>
                   </div>
                 )}
-                {showEmail && <div className="text-gray-700">{row.email}</div>}
-                {showConnectedOn && <div className="text-gray-700">{row.connectedOn}</div>}
+                {showEmail && <div className="w-[287px] text-gray-700">{row.email}</div>}
+                {showConnectedOn && <div className="w-[215px] text-gray-700">{row.connectedOn}</div>}
                 {showRecommends && (
-                  <div className="flex justify-end text-gray-700">
+                  <div className="w-[160px] text-gray-700">
                     <div className="relative flex items-center">
                       <span className="group-hover:opacity-0 transition-opacity">
                         {row.recommends}
                       </span>
                       <ArrowRight2
-                        className="absolute right-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute left-0 opacity-0 group-hover:opacity-100 transition-opacity"
                         size="20"
                         color="#6B7280"
                       />
@@ -247,7 +225,7 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
                   </div>
                 )}
                 {showRecommendedBy && (
-                  <div className="flex items-center -space-x-2">
+                  <div className="w-[180px] flex items-center -space-x-2">
                     {row.recommendedBy?.map((p, idx) => (
                       <div
                         key={idx}
@@ -259,7 +237,7 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
                   </div>
                 )}
                 {showNotes && (
-                  <div className="flex justify-end w-full">
+                  <div className="w-[94px] flex justify-end">
                     <div className="relative w-6 h-6 flex items-center justify-center">
                       <Note
                         className="absolute inset-0 m-auto transition-opacity group-hover:opacity-0"

@@ -12,7 +12,7 @@ const MyCircle = () => {
   };
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto md:px-4 md:py-6">
+    <div className="w-full max-w-[1440px] mx-auto md:px-8 md:py-8">
       {/* Desktop Layout */}
       <div className="hidden md:flex gap-6">
         {/* Main Content Section - 1000px */}
