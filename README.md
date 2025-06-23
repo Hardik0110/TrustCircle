@@ -53,3 +53,5 @@ export default tseslint.config({
 })
 ```
 # TrustCircle
+# To run the website locally run the yarn install command first then yarn dev
+It will install all the dependencies for the project to start.

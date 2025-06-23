@@ -76,7 +76,7 @@ const MyCircle = () => {
           </div>
 
           {/* Search Bar */}
-          <SearchBar 
+          <SearchBar
             value={searchQuery}
             onChange={handleSearchChange}
           />
@@ -89,7 +89,7 @@ const MyCircle = () => {
           showRecommendedBy={false}
           showNotes={false}
           showEmail={false}
-          showConnectedOn={false}
+          showConnectedOn={true}
           showRecommends={true}
           showSeparatorLine={false}
           className="w-full "

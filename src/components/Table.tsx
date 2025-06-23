@@ -7,6 +7,7 @@ import {
   ProfileTick,
   ArrowLeft2,
   Trash,
+  LogoutCurve,
 } from "iconsax-reactjs";
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { recommendationData, type Recommendation } from "../lib/data/recommendationData";
@@ -45,6 +46,7 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
   const popupRef = useRef<HTMLDivElement>(null);
   const rowPopupRef = useRef<HTMLDivElement>(null);
   const [detailIndex, setDetailIndex] = useState<number | null>(null);
+  const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
 
   
 
@@ -292,104 +294,193 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
       </div>
 
       {/* MOBILE */}
-      <div className="w-full flex flex-col md:hidden max-h-96 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden gap-2">
-        {filtered.map((row, i) => {
-          const tags = Array.isArray(row.tags) ? row.tags : [row.tag];
-          return (
-            <div
-              key={i}
-              className="w-full bg-white p-4 border-b border-gray-200"
+      <div className="w-full flex flex-col md:hidden">
+        {/* MOBILE DETAIL CARD */}
+        {detailIndex !== null && (
+          <div className="w-full bg-white border-b border-gray-200 p-4 mb-2">
+            <button
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4"
+              onClick={() => setDetailIndex(null)}
             >
-              {/* First row: Initial + Name and Recommended By */}
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`w-8 h-8 rounded-full ${row.color} flex items-center justify-center text-xs font-semibold`}
-                  >
-                    {row.initials}
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="font-medium text-sm text-gray-800">{row.name}</span>
-                    {showRecommends && (
-                    <div className="flex items-center gap-1">
-                      <ProfileTick size={12} color="#6B7280" />
-                      <span className="text-xs text-gray-600">{row.recommends} Recommendations</span>
-                    </div>
-                    )}
-                  </div>
+              <ArrowLeft2 size={20} />
+              <span className="text-sm">Back</span>
+            </button>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div
+                  className={`w-12 h-12 rounded-full ${filtered[detailIndex].color} flex items-center justify-center text-sm font-semibold`}
+                >
+                  {filtered[detailIndex].initials}
                 </div>
-                {showRecommendedBy && (
-                  <div className="flex items-center -space-x-2">
-                    {row.recommendedBy?.map((p, idx) => (
-                      <div
-                        key={idx}
-                        className={`w-10 h-10 rounded-full ${p.color} border-2 border-white flex items-center justify-center text-[10px] font-semibold`}
-                      >
-                        {p.initials}
+                <div className="flex flex-col">
+                  <span className="font-semibold text-base">{filtered[detailIndex].name}</span>
+                  <span className="text-sm text-gray-500">{filtered[detailIndex].email}</span>
+                </div>
+              </div>
+              <button
+                className="flex items-center gap-1 text-red-600 hover:text-red-800"
+                onClick={() => setShowDeletePopup(true)}
+              >
+                <Trash size={20} />
+              </button>
+            </div>
+            {showConnectedOn && (
+              <div className="text-sm text-gray-600 mb-2">
+                Connected on {filtered[detailIndex].connectedOn}
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="max-h-96 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden gap-2 flex flex-col">
+          {filtered.map((row, i) => {
+            const tags = Array.isArray(row.tags) ? row.tags : [row.tag];
+            return (
+              <div
+                key={i}
+                onClick={() => setDetailIndex(detailIndex === i ? null : i)}
+                className={`w-full p-4 border-b border-gray-200 cursor-pointer transition-colors ${
+                  detailIndex === i ? "bg-[#eef6f1]" : "bg-white hover:bg-[#F8F5F0]"
+                }`}
+              >
+                {/* First row: Initial + Name and Recommended By */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`w-8 h-8 rounded-full ${row.color} flex items-center justify-center text-xs font-semibold`}
+                    >
+                      {row.initials}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-medium text-sm text-gray-800">{row.name}</span>
+                      {showRecommends && (
+                      <div className="flex items-center gap-1">
+                        <ProfileTick size={12} color="#6B7280" />
+                        <span className="text-xs text-gray-600">{row.recommends} Recommendations</span>
                       </div>
+                      )}
+                    </div>
+                  </div>
+                  {showRecommendedBy && (
+                    <div className="flex items-center -space-x-2">
+                      {row.recommendedBy?.map((p, idx) => (
+                        <div
+                          key={idx}
+                          className={`w-10 h-10 rounded-full ${p.color} border-2 border-white flex items-center justify-center text-[10px] font-semibold`}
+                        >
+                          {p.initials}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Second row: Category tags */}
+                {showCategory && (
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {tags.map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className="text-xs text-gray-700 border border-[#E6E2DD] px-2 py-1 rounded-full"
+                      >
+                        {tag}
+                      </span>
                     ))}
                   </div>
                 )}
-              </div>
 
-              {/* Second row: Category tags */}
-              {showCategory && (
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {tags.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className="text-xs text-gray-700 border border-[#E6E2DD] px-2 py-1 rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {/* Email row */}
-              {showEmail && (
-                <div className="mb-3">
-                  <div className="text-gray-700 text-sm">{row.email}</div>
-                </div>
-              )}
-
-              {/* Connected On row */}
-              {showConnectedOn && (
-                <div className="mb-3">
-                  <div className="text-gray-700 text-sm">{row.connectedOn}</div>
-                </div>
-              )}
-
-              {/* Notes row */}
-              {showNotes && (
-                <div className="mb-3">
-                  <div className="flex items-center gap-2 text-gray-700">
-                    <Note size="16" color="#6B7280" />
-                    <span className="text-sm">{row.notesCount} notes</span>
+                {/* Email row */}
+                {showEmail && (
+                  <div className="mb-3">
+                    <div className="text-gray-700 text-sm">{row.email}</div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Separator line */}
-              {showSeparatorLine && (
-                <div className="border-t border-gray-200 mb-3"></div>
-              )}  
-
-              {/* Third row: Phone and Arrow */}
-              {showPhone && (
-              <div className="flex items-center justify-between">
-                
-                  <div className="flex items-center gap-2 text-gray-700">
-                    <Call size="16" color="#6B7280" />
-                    <span className="text-sm">{row.phone}</span>
+                {/* Connected On row */}
+                {showConnectedOn && (
+                  <div className="mb-3">
+                    <div className="text-gray-700 text-sm">{row.connectedOn}</div>
                   </div>
-                
-                <ArrowRight2 size="20" color="#6B7280" />
+                )}
+
+                {/* Notes row */}
+                {showNotes && (
+                  <div className="mb-3">
+                    <div className="flex items-center gap-2 text-gray-700">
+                      <Note size="16" color="#6B7280" />
+                      <span className="text-sm">{row.notesCount} notes</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Separator line */}
+                {showSeparatorLine && (
+                  <div className="border-t border-gray-200 mb-3"></div>
+                )}  
+
+                {/* Third row: Phone and Arrow */}
+                {showPhone && (
+                <div className="flex items-center justify-between">
+                  
+                    <div className="flex items-center gap-2 text-gray-700">
+                      <Call size="16" color="#6B7280" />
+                      <span className="text-sm">{row.phone}</span>
+                    </div>
+                  
+                  <ArrowRight2 size="20" color="#6B7280" />
+                </div>
+                )}
               </div>
-              )}
+            );
+          })}
+        </div>
+
+        {/* DELETE CONFIRMATION POPUP - MOBILE ONLY */}
+        {showDeletePopup && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+          <div className="relative w-[328px] h-[260px] bg-white rounded-lg p-6 flex flex-col">
+            
+            {/* Close Button */}
+            <button
+              onClick={() => setShowDeletePopup(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
+            >
+              &times;
+            </button>
+
+            <div className="flex items-center justify-between">
+              <h2>
+                <LogoutCurve color="#1c6c41" size={28} className="mb-2" />
+              </h2>
             </div>
-          );
-        })}
+
+            <h1 className="text-xl font-semibold text-gray-800 mb-2">Remove Connection?</h1>
+            <div className="flex-1 mb-2 text-[#696F67]">
+              If you close now, all progress will be lost. <br />
+              This action cannot be undone
+            </div>
+
+            <div className="flex gap-4 mb-2">
+              <button
+                className="flex-1 py-3 px-4 bg-[#1C6C41] text-white rounded-full font-medium hover:bg-green-700"
+                onClick={() => {
+                  console.log("delete", filtered[detailIndex!]);
+                  setShowDeletePopup(false);
+                  setDetailIndex(null);
+                }}
+              >
+                Remove
+              </button>
+              <button
+                className="flex-1 py-3 px-4 border-2 border-[#1C6C41] text-[#1C6C41] rounded-full font-medium hover:bg-green-50"
+                onClick={() => setShowDeletePopup(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );

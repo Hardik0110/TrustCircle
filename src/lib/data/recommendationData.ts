@@ -180,3 +180,5 @@ export const recommendationData: Recommendation[] = [
     notesCount: 4,
   },
 ];
+
+export const recommendationNames = recommendationData.map(r => r.name);

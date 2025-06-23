@@ -102,7 +102,6 @@ const Index: React.FC = () => {
           showConnectedOn={false}
           showRecommends={false}
           showSeparatorLine={true}
-          
           className="w-full "
         />
 
