@@ -1,16 +1,9 @@
-import {
-  Note,
-  ArrowRight2,
-  Call,
-  ArrowSwapVertical,
-  Sort,
-  ProfileTick,
-  ArrowLeft2,
-  Trash,
-  LogoutCurve,
-} from "iconsax-reactjs";
+import { Note, ArrowRight2, Call, ArrowSwapVertical,
+          Sort, ProfileTick, ArrowLeft2, Trash, LogoutCurve,
+        } from "iconsax-reactjs";
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { recommendationData, type Recommendation } from "../lib/data/recommendationData";
+import Filters from "./Filters";
 
 interface ColumnVisibility {
   showCategory: boolean;
@@ -28,8 +21,6 @@ interface RecommendationTableProps extends ColumnVisibility {
   className?: string;
 }
 
-const categories = [...new Set(recommendationData.flatMap(item => item.tags))];
-
 const RecommendationTable: React.FC<RecommendationTableProps> = ({
   data = recommendationData,
   className = "",
@@ -40,20 +31,18 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
         } = columnVisibility;
 
   const [sortAsc, setSortAsc] = useState(true);
-  const [showCatPopup, setShowCatPopup] = useState(false);
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
   const [openRowPopup, setOpenRowPopup] = useState<number | null>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const rowPopupRef = useRef<HTMLDivElement>(null);
   const [detailIndex, setDetailIndex] = useState<number | null>(null);
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
-
-  
+  const [showFilters, setShowFilters] = useState<boolean>(false);
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
-        setShowCatPopup(false);
+        // setShowCatPopup(false);
       }
       if (rowPopupRef.current && !rowPopupRef.current.contains(e.target as Node)) {
         setOpenRowPopup(null);
@@ -82,7 +71,7 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
   return (
     <div className={className}>
       {/* DESKTOP */}
-      <div className="hidden md:block rounded-[20px] overflow-hidden scrollbar-none border-2 border-white">
+      <div className="relative hidden md:block rounded-[20px] overflow-visible scrollbar-none border-2 border-white">
         {/* DETAIL CARD slides above header */}
         {detailIndex !== null && (
           <div className="h-[96px] w-full bg-white border-b border-gray-200 flex items-center px-4 ">
@@ -132,33 +121,24 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
           </div>
 
           {showCategory && (
-            <div className="w-[245px] relative" ref={popupRef}>
+            <div className="w-[245px] relative z-30" ref={popupRef}>
               <span className="flex items-center gap-1">
                 Category
-                <Sort size={15} color="grey" className="cursor-pointer" onClick={() => setShowCatPopup(v => !v)} />
+                <Sort
+                  size={15}
+                  color="grey"
+                  className="cursor-pointer"
+                  onClick={() => setShowFilters((prev) => !prev)}
+                />
               </span>
-              {showCatPopup && (
-                <div className="absolute top-full mt-2 right-0 bg-[#F8F5F0] p-4 shadow-lg rounded-md z-10 w-[200px] border-2 border-white">
-                  <div className="text-gray-800 font-semibold mb-2">All Categories</div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {categories.map(cat => (
-                      <button
-                        key={cat}
-                        className={`px-3 py-1 border-2 rounded-full text-sm ${
-                          selectedCat === cat
-                            ? "border-[#E6E2DD] bg-white text-gray-900 font-semibold"
-                            : "border-[#E6E2DD] bg-white text-gray-700"
-                        }`}
-                        onClick={() => { setSelectedCat(cat); setShowCatPopup(false); }}
-                      >
-                        {cat}
-                      </button>
-                    ))}
-                  </div>
+              {showFilters && (
+                <div className="absolute top-full left-0 mt-2 z-50">
+                  <Filters />
                 </div>
               )}
             </div>
           )}
+
           {showPhone && <span className="w-[200px]">Contact number</span>}
           {showEmail && <span className="w-[287px]">Email</span>}
           {showConnectedOn && <span className="w-[215px]">Connected on</span>}
@@ -166,7 +146,7 @@ const RecommendationTable: React.FC<RecommendationTableProps> = ({
           {showRecommendedBy && (
             <span className="w-[180px] flex items-center gap-1">
               Recommended by
-              <Sort size={15} color="grey" className="cursor-pointer" />
+              <Sort size={15} color="grey" className="cursor-pointer" onClick={() => setShowFilters((prev) => !prev)} />
             </span>
           )}
           {showNotes && <span className="w-[94px] text-right">Notes</span>}

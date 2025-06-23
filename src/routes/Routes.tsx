@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import MainLayout from "./layout/MainLayout"
-import AuthLayout from "./layout/AuthLayout"
-import Index from "./pages/Recommendations/Index"
-import MyCircle from "./pages/MyCircle/Index"
-import ForgotPasswordEmail from "./pages/Auth/ForgotPasswordEmail"
-import OtpVerification from "./pages/Auth/OtpVerification"
-import Requests from "./pages/Requests/Index"
+import MainLayout from "../layout/MainLayout"
+import AuthLayout from "../layout/AuthLayout"
+import Index from "../pages/Recommendations/Index"
+import MyCircle from "../pages/MyCircle/Index"
+import ForgotPasswordEmail from "../pages/Auth/ForgotPasswordEmail"
+import OtpVerification from "../pages/Auth/OtpVerification"
+import Requests from "../pages/Requests/Index"
 
 function App() {
   return (
