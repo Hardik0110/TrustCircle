@@ -1,0 +1,42 @@
+[
+  {
+    "category": "Food and Dining",
+    "subcategories": ["Restaurants", "Cafes", "Catering Services"]
+  },
+  {
+    "category": "Home & Property",
+    "subcategories": ["Plumbing", "Electricians", "Cleaning Services"]
+  },
+  {
+    "category": "Automotive and Transportation",
+    "subcategories": ["Car Repair", "Taxi Services", "Bike Rentals"]
+  },
+  {
+    "category": "Beauty and Wellness",
+    "subcategories": ["Salons", "Spas", "Personal Trainers"]
+  },
+  {
+    "category": "Health and Medical",
+    "subcategories": ["Doctors", "Clinics", "Pharmacies"]
+  },
+  {
+    "category": "Family and Care",
+    "subcategories": ["Childcare", "Elder Care", "Pet Care"]
+  },
+  {
+    "category": "Professional and Business",
+    "subcategories": ["Lawyers", "Consultants", "Accountants"]
+  },
+  {
+    "category": "Education and Training",
+    "subcategories": ["Tutors", "Coaching Centers", "Online Courses"]
+  },
+  {
+    "category": "Personal & Household",
+    "subcategories": ["Laundry", "Cook Services", "Home Repairs"]
+  },
+  {
+    "category": "Events & Entertainment",
+    "subcategories": ["Party Planners", "Event Venues", "DJ Services"]
+  }
+]
