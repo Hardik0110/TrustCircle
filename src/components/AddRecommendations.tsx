@@ -8,11 +8,13 @@ import {
 } from "iconsax-reactjs";
 import { useState } from "react";
 import categoriesData from "@/lib/data/categoriesData.json";
+import AddProvider from "./AddProvider";
 
 const AddRecommendations = ({ onClose }: { onClose: () => void }) => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [filteredCategories, setFilteredCategories] = useState(categoriesData);
+  const [showAddProvider, setShowAddProvider] = useState(false); 
 
   const toggleCategory = (category: string) => {
     setExpandedCategory(prev => (prev === category ? null : category));
@@ -32,8 +34,15 @@ const AddRecommendations = ({ onClose }: { onClose: () => void }) => {
     setFilteredCategories([]);
   };
 
+  
+  if (showAddProvider) {
+    return (
+      <AddProvider onClose={() => setShowAddProvider(false)} />
+    );
+  }
+
   return (
-    <div className="fixed right-0 top-0 h-full w-[500px] bg-white z-50 overflow-y-auto">
+    <div className="fixed right-0 top-0 h-full w-[500px] md:w-[500px] w-full bg-white z-50 overflow-y-auto">
       {/* Header */}
       <div className="flex justify-between p-4 bg-[#F8F5F0]">
         <div className="flex flex-col gap-2">
@@ -52,7 +61,7 @@ const AddRecommendations = ({ onClose }: { onClose: () => void }) => {
 
       {/* Search Bar */}
       <div className="px-4 pt-4">
-        <div className="relative w-[452px] h-[40px]">
+        <div className="relative w-[452px] md:w-[452px] w-full h-[40px]">
           <SearchNormal1
             className="absolute left-3 top-1/2 transform -translate-y-1/2"
             size="20"
@@ -72,14 +81,17 @@ const AddRecommendations = ({ onClose }: { onClose: () => void }) => {
       {/* Categories */}
       <div className="p-4 flex flex-col gap-4">
         {filteredCategories.length === 0 && search.trim() !== "" ? (
-          <div className="w-[452px] h-[244px] border border-gray-300 rounded-[20px] flex flex-col justify-center items-center gap-4 bg-[#F8F5F0] text-center">
+          <div className="w-[452px] md:w-[452px] w-full h-[244px] border border-gray-300 rounded-[20px] flex flex-col justify-center items-center gap-4 bg-[#F8F5F0] text-center">
             <div className="rounded-full bg-white p-4">
                 <ElementPlus size="48" color="#1C6C41" />
             </div>
             <h5 className="text-sm font-medium leading-snug">
                 Would you like to create a custom <br />category for this service?
             </h5>
-            <button className="px-4 py-2 bg-[#F8F5F0] text-[#1C6C41] text-md font-semibold cursor-pointer">
+            <button
+              className="px-4 py-2 bg-[#F8F5F0] text-[#1C6C41] text-md font-semibold cursor-pointer"
+              onClick={() => setShowAddProvider(true)} 
+            >
                 + Create a custom category
             </button>
         </div>

@@ -1,6 +1,7 @@
 import { MoreCircle, ProfileTick, SmsStar, UserCirlceAdd } from "iconsax-reactjs";
 import { CardHeader } from "./ui/card";
-  import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import CircularFabMenu from "./CategoryFabMenu";
 
 interface NavButtonProps {
   icon: React.ComponentType<{ className?: string }>;
@@ -59,9 +60,8 @@ const Header: React.FC = () => {
     { icon: ProfileTick, label: "Rec", path: "/recommendations" },
     { icon: MoreCircle, label: "MyCircle", path: "/mycircle" },
     { icon: UserCirlceAdd, label: "Requests", path: "/requests" },
-  ];
 
-  
+  ];
 
   return (
     <>
@@ -95,18 +95,25 @@ const Header: React.FC = () => {
 
         {/* Right: Visible in all views */}
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigate("/invites")}
-            className="flex items-center gap-2 text-gray-400 hover:bg-[#1C6C41] hover:text-[#E9FF95] px-3 py-1 border border-gray-500 rounded-full text-xs font-medium transition-all duration-200"
-          >
+            <button
+            onClick={() => navigate("/invite")}
+            className={`flex items-center gap-2 h-[40px] w-[110px] justify-center text-sm font-medium transition-all duration-200 ${
+              location.pathname === "/invite"
+              ? "bg-[#1C6C41] text-[#E9FF95] rounded-full"
+              : "text-gray-400 hover:bg-[#1C6C41] hover:text-[#E9FF95] hover:rounded-full"
+            }`}
+            >
             <SmsStar className="h-5 w-5" />
             <span className="hidden sm:block">Invites</span>
-          </button>
+            </button>
           <div className="w-8 h-8 rounded-full bg-[#FDDDE1] flex items-center justify-center text-sm font-bold text-gray-800">
             SA
           </div>
         </div>
       </CardHeader>
+
+      {/* Circular FAB Menu */}
+      <CircularFabMenu />
 
       {/* Bottom Nav: Mobile Only */}
       <nav className="fixed bottom-0 left-0 right-0 bg-[#17321F] md:hidden rounded-t-3xl p-3 flex justify-around items-center z-50">

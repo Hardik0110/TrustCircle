@@ -5,10 +5,12 @@ import { Card } from "@/components/ui/card";
 import { AddSquare, Lock1, UserTick } from "iconsax-reactjs";
 import { useState } from "react";
 import AddRecommendations from "@/components/AddRecommendations";
+import AddProvider from "@/components/AddProvider";
 
 const Index: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [showAddRecommendation, setShowAddRecommendation] = useState(false);
+  const [showAddProvider, setShowAddProvider] = useState(false);
 
   const handleSearchChange = (value: string): void => {
     setSearchValue(value);
@@ -19,12 +21,22 @@ const Index: React.FC = () => {
       {/* Add Recommendation Drawer */}
       {showAddRecommendation && (
         <>
-          {/* Optional: overlay */}
           <div
             className="fixed inset-0 bg-black/20 z-40"
             onClick={() => setShowAddRecommendation(false)}
           />
           <AddRecommendations onClose={() => setShowAddRecommendation(false)} />
+        </>
+      )}
+
+      {/* Add Provider Drawer */}
+      {showAddProvider && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/20 z-40"
+            onClick={() => setShowAddProvider(false)}
+          />
+          <AddProvider onClose={() => setShowAddProvider(false)} />
         </>
       )}
 
@@ -74,7 +86,7 @@ const Index: React.FC = () => {
             />
             <button
               className="absolute top-[96px] left-[24px] rounded-full w-[198px] h-[40px] bg-[#1C6C41] text-white text-m font-bold cursor-pointer"
-              onClick={() => setShowAddRecommendation(true)} // <-- Open the drawer
+              onClick={() => setShowAddRecommendation(true)} 
             >
               <AddSquare className="inline mr-2" size="20" color="#FFFFFF" />
               Recommendation
@@ -85,7 +97,10 @@ const Index: React.FC = () => {
             src="src/assets/askyourcircle.png" 
             alt="" className="w-full h-full rounded-[20px] object-cover"
           />
-          <button className="absolute top-[95px] left-[24px] rounded-full w-[175px] h-[40px] bg-white text-black text-m font-bold cursor-pointer border-1 border-green-700">
+          <button 
+            className="absolute top-[95px] left-[24px] rounded-full w-[175px] h-[40px] bg-white text-black text-m font-bold cursor-pointer border-1 border-green-700"
+            onClick={() => setShowAddProvider(true)} 
+          >
             <Lock1 className="inline mr-2" size="20" color="#000000" />
             Ask Your Circle
           </button>

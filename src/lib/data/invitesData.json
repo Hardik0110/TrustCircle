@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Aarav Mehta",
+    "email": "aarav.mehta@example.com",
+    "expiresIn": "3 days"
+  },
+  {
+    "name": "Riya Shah",
+    "email": "riya.shah@example.com",
+    "expiresIn": "5 days"
+  },
+  {
+    "name": "Kabir Patel",
+    "email": "kabir.patel@example.com",
+    "expiresIn": "1 day"
+  },
+  {
+    "name": "Sneha Nair",
+    "email": "sneha.nair@example.com",
+    "expiresIn": "7 days"
+  },
+  {
+    "name": "Dev Joshi",
+    "email": "dev.joshi@example.com",
+    "expiresIn": "2 days"
+  },
+  {
+    "name": "Priya Sharma",
+    "email": "priya.sharma@example.com",
+    "expiresIn": "4 days"
+  },
+  {
+    "name": "Rahul Singh",
+    "email": "rahul.singh@example.com",
+    "expiresIn": "6 days"
+  },
+  {
+    "name": "Ananya Gupta",
+    "email": "ananya.gupta@example.com",
+    "expiresIn": "2 days"
+  },
+  {
+    "name": "Vikram Reddy",
+    "email": "vikram.reddy@example.com",
+    "expiresIn": "8 days"
+  },
+  {
+    "name": "Shruti Desai",
+    "email": "shruti.desai@example.com",
+    "expiresIn": "1 day"
+  }
+]

@@ -6,6 +6,7 @@ import MyCircle from "../pages/MyCircle/Index"
 import ForgotPasswordEmail from "../pages/Auth/ForgotPasswordEmail"
 import OtpVerification from "../pages/Auth/OtpVerification"
 import Requests from "../pages/Requests/Index"
+import Invite from "@/pages/Invite/Index"
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/recommendations" element={<Index />} />
           <Route path="/mycircle" element={<MyCircle />} />
           <Route path="/requests" element={<Requests />} />
+          <Route path="/invite" element={<Invite />} />
         </Route>
 
         {/* Routes with auth layout */}

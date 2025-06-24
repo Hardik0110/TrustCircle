@@ -20,6 +20,7 @@
     "lucide-react": "^0.516.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-phone-input-2": "^2.15.1",
     "react-router-dom": "^7.6.2",
     "shadcn": "^2.6.4",
     "styled-components": "^6.1.19",
