@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
-import { LogoutCurve } from 'iconsax-reactjs';
+import { Edit, LogoutCurve } from 'iconsax-reactjs';
 
 const EditProfile = ({ onClose }: { onClose: () => void }) => {
   const [name, setName] = useState('John Doe');
@@ -43,13 +43,13 @@ const EditProfile = ({ onClose }: { onClose: () => void }) => {
         <h1 className="text-lg sm:text-xl font-semibold text-gray-800">
           {isEditing ? 'Edit Profile Details' : 'My Profile'}
         </h1>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center ">
           {!isEditing && (
             <button
               onClick={() => setIsEditing(true)}
-              className="text-green-700 font-semibold hover:underline text-sm sm:text-base mr-4"
+              className="text-black font-semibold hover:underline text-sm sm:text-base mr-4"
             >
-              Edit Profile
+             <Edit size={18} color='#1C6C41' className='inline mr-1'/> Edit 
             </button>
           )}
         </div>
