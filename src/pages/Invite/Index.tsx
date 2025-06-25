@@ -115,7 +115,7 @@ const Invite = () => {
             onClick={() => setShowSendInvite(false)}
           />
           <div className="fixed right-0 top-0 h-full w-full max-w-[500px] z-50">
-            <SendInvite />
+            <SendInvite onClose={() => setShowSendInvite(false)} />
           </div>
         </>
       )}
