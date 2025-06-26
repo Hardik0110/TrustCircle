@@ -6,6 +6,7 @@ import { AddSquare, Lock1, UserTick } from "iconsax-reactjs";
 import { useState } from "react";
 import AddRecommendations from "@/components/AddRecommendations";
 import AddProvider from "@/components/AddProvider";
+import RecommendationBar from "@/components/RecommendationBar";
 
 const Index: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -43,7 +44,7 @@ const Index: React.FC = () => {
       {/* Desktop Layout */}
       <div className="hidden md:flex gap-6">
         {/* Main Content Section - 1000px */}
-        <div className="w-[1000px] flex flex-col gap-8">
+        <div className="w-[1000px] flex flex-col gap-4">
           {/* Header Section */}
           <div className="flex items-center justify-between">
             {/* Left: Heading */}
@@ -58,6 +59,8 @@ const Index: React.FC = () => {
               onChange={handleSearchChange}
             />
           </div>
+
+          <RecommendationBar />
 
           {/* Table */}
           <RecommendationTable

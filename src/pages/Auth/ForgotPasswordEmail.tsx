@@ -2,7 +2,7 @@ import RecommendationTable from "@/components/Table"
 
 const ForgotPasswordEmail = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#F8F5F0] px-4">
+    <div className="flex items-center justify-center h-[1044px] bg-[#F8F5F0] px-4">
       <div className="w-full max-w-[600px] bg-white rounded-md shadow space-y-4">
         {/* Header Image */}
         <img
@@ -19,7 +19,7 @@ const ForgotPasswordEmail = () => {
           </p>
           <p className="mt-3">
             I’ve added you to my trusted network of service providers here:<br />
-            <a href="https://www.trustcircle.com/markshaw" className="text-green-600 font-semibold underline">
+            <a href="" className="text-green-600 font-semibold underline">
               www.trustcircle.com/markshaw
             </a>
           </p>
