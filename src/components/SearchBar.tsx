@@ -1,156 +1,159 @@
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { SearchNormal1, Sort, Clock } from "iconsax-reactjs";
-import type { ChangeEvent, KeyboardEvent } from "react";
-import { useState, useEffect, useRef } from "react";
-import { recommendationData } from "../lib/data/recommendationData";
 import Filters from "./Filters";
+import { recommendationData } from "../lib/data/recommendationData";
 
-interface SearchBarProps {
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-}
-
-const searchHistory = [
+const SEARCH_HISTORY = [
   "John Smith",
-  "Sarah Johnson", 
+  "Sarah Johnson",
   "Mike Davis",
   "Anna Williams",
-  "David Brown"
+  "David Brown",
 ];
 
-export const SearchBar: React.FC<SearchBarProps> = ({ 
-  value, 
-  onChange, 
-  placeholder = "Search by name, category or contact number" 
-}) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [filteredRecommendations, setFilteredRecommendations] = useState<typeof recommendationData>([]);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+const SuggestionItem = ({
+  label,
+  icon,
+  onClick,
+  extra,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+  extra?: React.ReactNode;
+}) => (
+  <div
+    onClick={onClick}
+    className="flex items-center justify-between px-3 py-2 hover:bg-[#F8F5F0] cursor-pointer rounded-md"
+  >
+    <div className="flex items-center gap-2">
+      {icon}
+      <span className="text-sm text-gray-700">{label}</span>
+    </div>
+    {extra}
+  </div>
+);
+
+export const SearchBar: React.FC<{
+  value: string;
+  onChange: (val: string) => void;
+  placeholder?: string;
+}> = ({ value, onChange, placeholder = "Search by name, category or contact number" }) => {
+  const [open, setOpen] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [showFilters, setShowFilters] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    };
+  const filteredRecommendations = useMemo(() => {
+    if (!value.trim()) return [];
+    return recommendationData.filter(p =>
+      p.name.toLowerCase().includes(value.toLowerCase())
+    );
+  }, [value]);
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+  const handleOutsideClick = useCallback((e: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      setOpen(false);
+    }
   }, []);
 
   useEffect(() => {
-    if (value.trim()) {
-      const filtered = recommendationData.filter(person =>
-        person.name.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredRecommendations(filtered);
-    } else {
-      setFilteredRecommendations([]);
-    }
-  }, [value]);
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [handleOutsideClick]);
 
-  const handleInputFocus = () => {
-    setIsDropdownOpen(true);
-  };
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
-    setIsDropdownOpen(true);
-  };
-
-  const handleNameSelect = (name: string) => {
-    onChange(name);
-    setIsDropdownOpen(false);
-    inputRef.current?.blur();
-  };
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Escape') {
-      setIsDropdownOpen(false);
+  const onFocus = useCallback(() => setOpen(true), []);
+  const onInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(e.target.value);
+      setOpen(true);
+    },
+    [onChange]
+  );
+  const onKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setOpen(false);
       inputRef.current?.blur();
     }
-  };
+  }, []);
 
-  const showSearchHistory = !value.trim() && isDropdownOpen;
-  const showSuggestions = value.trim() && filteredRecommendations.length > 0 && isDropdownOpen;
+  const selectName = useCallback(
+    (name: string) => {
+      onChange(name);
+      setOpen(false);
+      inputRef.current?.blur();
+    },
+    [onChange]
+  );
+
+  const showHistory = !value.trim() && open;
+  const showSuggestions = value.trim() && filteredRecommendations.length > 0 && open;
 
   return (
-    <div className="flex items-center gap-2 " ref={dropdownRef}>
+    <div className="relative flex items-center gap-2" ref={dropdownRef}>
       <div className="relative h-10 w-[264px] md:w-[420px]">
-        <SearchNormal1
-          className="absolute left-3 top-1/2 transform -translate-y-1/2"
-          size="20"
-          color="#1C6C41"
-        />
+        <SearchNormal1 className="absolute left-3 top-1/2 transform -translate-y-1/2" size={20} color="#1C6C41" />
         <input
           ref={inputRef}
           type="text"
           value={value}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          onKeyDown={handleKeyDown}
+          onChange={onInputChange}
+          onFocus={onFocus}
+          onKeyDown={onKeyDown}
           placeholder={placeholder}
           className="w-full h-full pl-12 pr-4 bg-white rounded-md text-sm outline-none focus:border-[#1C6C41] focus:ring-1 focus:ring-[#1C6C41] transition-all duration-200"
         />
-        
-        {(showSearchHistory || showSuggestions) && (
-          <div className="absolute top-full p-2 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-10 max-h-60 overflow-hidden scrollbar-none">
-            {showSearchHistory && (
-              <>
-                {searchHistory.map((name, index) => (
-                  <div
-                    key={index}
-                    onClick={() => handleNameSelect(name)}
-                    className="flex items-center gap-2 px-3 py-2 hover:bg-[#F8F5F0] cursor-pointer rounded-md"
-                  >
-                    <Clock size="16" color="#6B7280" />
-                    <span className="text-sm text-gray-700">{name}</span>
-                  </div>
-                ))}
-              </>
-            )}
-            
+
+        {(showHistory || showSuggestions) && (
+          <div className="absolute top-full left-0 right-0 mt-1 max-h-60 overflow-hidden scrollbar-none bg-white border border-gray-200 rounded-xl shadow-lg z-10">
+            {showHistory &&
+              SEARCH_HISTORY.map(name => (
+                <SuggestionItem
+                  key={name}
+                  label={name}
+                  icon={<Clock size={16} color="#6B7280" />}
+                  onClick={() => selectName(name)}
+                />
+              ))}
+
             {showSuggestions && (
-              <>
-                <div className="px-3 py-2 text-xs font-medium text-gray-500 ">
+              <div>
+                <div className="px-3 py-2 text-xs font-medium text-gray-500">
                   Recommendations ({filteredRecommendations.length})
                 </div>
-                {filteredRecommendations.map((person, index) => (
-                  <div
-                    key={index}
-                    onClick={() => handleNameSelect(person.name)}
-                    className="flex items-center justify-between px-3 py-2 hover:bg-[#F8F5F0] cursor-pointer rounded-md"
-                  >
-                    <div className="flex items-center gap-2">
+                {filteredRecommendations.map(person => (
+                  <SuggestionItem
+                    key={person.name}
+                    label={person.name}
+                    icon={
                       <div className={`w-8 h-8 rounded-full ${person.color} flex items-center justify-center text-xs font-medium text-gray-700`}>
                         {person.initials}
                       </div>
-                      <div className="flex flex-col">
-                        <span className="text-sm text-gray-700">{person.name}</span>
-                        <span className="text-xs text-gray-500">{person.tag}</span>
-                      </div>
-                    </div>
-                    {person.phone && (
-                      <span className="text-xs text-gray-500">{person.phone}</span>
-                    )}
-                  </div>
+                    }
+                    extra={person.phone && <span className="text-xs text-gray-500">{person.phone}</span>}
+                    onClick={() => selectName(person.name)}
+                  />
                 ))}
-              </>
+              </div>
             )}
           </div>
         )}
       </div>
-      
-      <button className="h-10 w-10 flex items-center justify-center rounded-md bg-white hover:bg-[#e0e0e0] transition-colors md:hidden">
-        <Sort size="20" color="#1C6C41" onClick={() => setShowFilters((prev) => !prev)}  />
+
+      <button
+        type="button"
+        className="h-10 w-10 flex items-center justify-center rounded-md bg-white hover:bg-[#e0e0e0] transition-colors md:hidden relative"
+        onClick={() => setShowFilters(open => !open)}
+      >
+        <Sort size={20} color="#1C6C41" />
         {showFilters && (
-                <div className="absolute top-full left-0 mt-2 z-50">
-                  <Filters onClose={() => setShowFilters(false)}/>
-                </div>
-              )}
+          <div className="absolute top-full left-0 mt-2 z-50">
+            <Filters onClose={() => setShowFilters(false)} />
+          </div>
+        )}
       </button>
     </div>
   );
 };
+
+export default SearchBar;

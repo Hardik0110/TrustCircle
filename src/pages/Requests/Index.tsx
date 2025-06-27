@@ -58,7 +58,7 @@ const Requests = () => {
             <UserCirlceAdd size={38} color="#1C6C41" className="inline mr-2" /> Requests
           </h1>
 
-          {/* Responsive Tabs Section (visible on all screens) */}
+          {/* Responsive Tabs Section */}
           <Tabs />
 
           {/* Main Content Area */}

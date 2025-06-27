@@ -1,14 +1,40 @@
 import { AddSquare, Lock, Send2 } from "iconsax-reactjs";
-import { useState } from "react";
-import AddRecommendations from "./AddRecommendations"; // Import the drawer
+import { useState, useCallback } from "react";
+import AddRecommendations from "./AddRecommendations";
+
+const ACTIONS = [
+  { label: "Recommendations", icon: <AddSquare size="20" />, action: "recommend" },
+  { label: "Ask Your Circle", icon: <Lock size="20" />, action: "ask" },
+  { label: "Send Invite", icon: <Send2 size="20" />, action: "invite" },
+];
+
+type MenuItemProps = {
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+};
+
+const MenuItem = ({ label, icon, onClick }: MenuItemProps) => (
+  <button
+    type="button"
+    className="p-2 h-10 bg-white rounded-full flex items-center justify-center text-black font-semibold mb-3 shadow-lg transition-colors"
+    onClick={onClick}
+  >
+    {label}
+    <span className="ml-2">{icon}</span>
+  </button>
+);
 
 export default function CircularFabMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showAddRecommendations, setShowAddRecommendations] = useState(false); // Drawer state
+  const [drawer, setDrawer] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = useCallback(() => setIsOpen(open => !open), []);
+  const openDrawer = useCallback(() => {
+    setDrawer(true);
+    setIsOpen(false);
+  }, []);
+  const closeDrawer = useCallback(() => setDrawer(false), []);
 
   return (
     <>
@@ -20,19 +46,19 @@ export default function CircularFabMenu() {
         onClick={toggleMenu}
       />
 
-      {/* AddRecommendations Drawer */}
-      {showAddRecommendations && (
+      {/* Drawer */}
+      {drawer && (
         <>
           <div
             className="fixed inset-0 bg-black/20 z-40"
-            onClick={() => setShowAddRecommendations(false)}
+            onClick={closeDrawer}
           />
-          <AddRecommendations onClose={() => setShowAddRecommendations(false)} />
+          <AddRecommendations onClose={closeDrawer} />
         </>
       )}
 
-      <div className="fixed bottom-25 right-2 flex flex-col items-end md:hidden z-50 ">
-        {/* Menu buttons */}
+      <div className="fixed bottom-25 right-2 flex flex-col items-end md:hidden z-50">
+        {/* Menu Items */}
         <div
           className={`flex flex-col items-end transition-all duration-300 ${
             isOpen
@@ -40,28 +66,21 @@ export default function CircularFabMenu() {
               : "opacity-0 translate-y-4 pointer-events-none"
           }`}
         >
-          <button
-            className="p-2 h-10 bg-white rounded-full flex items-center justify-center text-black font-semibold mb-3 shadow-lg transition-colors"
-            onClick={() => {
-              setShowAddRecommendations(true);
-              setIsOpen(false);
-            }}
-          >
-            Recommendations
-            <AddSquare size="20" color="black" className="ml-2" />
-          </button>
-          <button className="p-2 h-10 bg-white rounded-full flex items-center justify-center text-black font-semibold mb-3 shadow-lg  transition-colors">
-            Ask Your Circle
-            <Lock size="20" color="black" className="ml-2" />
-          </button>
-          <button className="p-2 h-10 bg-white rounded-full flex items-center justify-center text-black font-semibold mb-3 shadow-lg  transition-colors">
-            Send Invite
-            <Send2 size="20" color="black" className="ml-2" />
-          </button>
+          {ACTIONS.map(({ label, icon, action }) => (
+            <MenuItem
+              key={action}
+              label={label}
+              icon={icon}
+              onClick={
+                action === "recommend" ? openDrawer : () => setIsOpen(false)
+              }
+            />
+          ))}
         </div>
 
         {/* Main FAB button */}
         <button
+          type="button"
           onClick={toggleMenu}
           className="w-14 h-14 bg-[#1C6C41] rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg hover:bg-[#1C6C41] transition-all duration-300 z-10"
         >
